@@ -14,7 +14,7 @@ export default function Card(prop) {
                             <p>{prop.info.overview}</p>
                         </div>
                         <div className="rating">
-                            <p>{prop.info.vote_average}</p>
+                            <p>{prop.info.vote_average.toFixed(1)}</p>
                         </div>
                     </div>
                 </div>

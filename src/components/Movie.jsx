@@ -9,7 +9,7 @@ export default function Movie(prop) {
 	const imageURL = "https://image.tmdb.org/t/p/original/";
 
 	async function getMovieInfo() {
-		const url = `https://api.themoviedb.org/3/movie/${id}?api_key=e5a35d50cfe6741326956a29bed1256a&language=en-US&append_to_response=videos`;
+        const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&append_to_response=videos`;
 
 		const response = await fetch(url);
 		const data = await response.json();
@@ -25,7 +25,6 @@ export default function Movie(prop) {
         // eslint-disable-next-line
 	}, []);
 
-    console.log(info.original_title);
 	return (
         isLoading ? <Loading/> : 
             <div className="movie">

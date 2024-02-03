@@ -1,31 +1,53 @@
 import { useState, useEffect } from "react";
 import Card from "./Card";
 import Loading from "./Loading";
+import Pagination from "./Pagination";
 
-export default function Home() {
-	let [movieCard, setMovieCard] = useState([]);
-	let [isLoading, setLoading] = useState(true);
+export default function Home ({ page, setPage, pages, setPages }) {
+	const [movieCard, setMovieCard] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	async function getData() {
 		try {
-			let url =
-				"https://api.themoviedb.org/3/discover/movie?api_key=e5a35d50cfe6741326956a29bed1256a&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate";
+			const url =
+				`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=${page}`;
 
-			let response = await fetch(url);
-			let data = await response.json();
-            let movieList = data.results;
-            setMovieCard(movieList);
-			setLoading(false);
-		} 
-        catch (err) {
+			const response = await fetch(url);
+			const data = await response.json();
+			const movieList = data.results;
+			setMovieCard(movieList);
+		} catch (err) {
 			console.log(err);
 		}
 	}
 
-    useEffect(() => {
-        getData();
-		// eslint-disable-next-line
-    }, []);
+	async function callGetData () {
+		setLoading(true);
+		await getData();
+		setLoading(false);
+	}
 
-	return isLoading ? <Loading /> : <div className="container">{ movieCard.map((movie, index) => <Card info={movie} key={index}/>) }</div>;
+	useEffect(() => {
+		callGetData();
+		// eslint-disable-next-line
+	}, [page]);
+	console.log(isLoading)
+	return isLoading ? (
+		<Loading />
+	) : (
+		<div className="container">
+			<h1>The Movie DB</h1>
+			<div className="movies-wrapper">
+				{movieCard && movieCard.map((movie, index) => (
+					<Card info={movie} key={index} />
+				))}
+			</div>
+			<Pagination
+				currentPage={page}
+				setCurrentPage={setPage}
+				pages={pages}
+				setPages={setPages}
+			/>
+		</div>
+	);
 }
