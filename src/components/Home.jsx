@@ -36,7 +36,7 @@ export default function Home ({ page, setPage, pages, setPages }) {
 		<Loading />
 	) : (
 		<div className="container">
-			<h1>The Movie DB</h1>
+			<h1>The Movie Hub</h1>
 			<div className="movies-wrapper">
 				{movieCard && movieCard.map((movie, index) => (
 					<Card info={movie} key={index} />
