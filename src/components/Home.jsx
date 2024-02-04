@@ -31,7 +31,7 @@ export default function Home ({ page, setPage, pages, setPages }) {
 		callGetData();
 		// eslint-disable-next-line
 	}, [page]);
-	console.log(isLoading)
+
 	return isLoading ? (
 		<Loading />
 	) : (
